@@ -3,7 +3,6 @@ from flask import (
 )
 import json
 from markupsafe import escape
-import re
 import requests
 # import boto3
 
@@ -42,7 +41,7 @@ def register():
             print((inst_name, user, ipaddr, pvt_key))
 
             try:
-                url = 'https://25a55it941.execute-api.us-west-2.amazonaws.com/test/dynamodbmanager'
+                url = 'https://8bue09wn9h.execute-api.us-west-2.amazonaws.com/test/dynamodbmanager'
                 new_entry = {
                     'operation': str(operation),
                     'payload': {
