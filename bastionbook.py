@@ -1,3 +1,4 @@
+
 from flask import (
     Flask, request, render_template, redirect, url_for, flash
 )
@@ -13,17 +14,31 @@ app.config['SESSION_TYPE'] = 'filesystem'
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!@ Durga and Uma!</p>"
+    return "<p>Hello, World!!</p>"
 
 #for passing inputs through extensions
 #the decorator argument and the function argument
 # have to match.
 @app.route("/<name>")
 def hello_name(name):
-    return f"<h1>Hello, {escape(name)}!</h2>"
+    return f"<h1>Hello, {escape(name)}!</h1>"
 
 @app.route("/register", methods=('GET','POST'))
 def register():
+
+    #if request is GET
+    # url = 'https://8vciapa5d8.execute-api.us-west-2.amazonaws.com/test/dynamodbmanager'
+    url = 'http://backend-endpoint/'
+
+    get_all_data = {
+    'operation': 'getall'
+    }
+    
+    response_data = requests.post(
+        url,
+        json=get_all_data,
+        headers={'Accept': 'application/json'}
+    )
     if request.method == 'POST':
         try:
             inst_name = request.form['instance_name']
@@ -42,7 +57,6 @@ def register():
             print((inst_name, user, ipaddr, pvt_key))
 
             try:
-                url = 'https://8vciapa5d8.execute-api.us-west-2.amazonaws.com/test/dynamodbmanager'
                 new_entry = {
                     'operation': str(operation),
                     'payload': {
@@ -54,23 +68,27 @@ def register():
                         }
                     }
                 }
+
                 response = requests.post(
                     url, 
-                    data=json.dumps(new_entry)
+                    json=new_entry,
+                    headers={'Accept': 'application/json'}
                     )
-                assert response.content.decode() == 'null'
+                # print(response.json())
+                assert response.json()["ResponseMetadata"]["HTTPStatusCode"] == 200
                 flash('entry successful')
-                return render_template('register.html', bad_entry=False)
+                return redirect(url_for('register'))
             except:
                 flash('entry unsuccessful, internal error.')
-                return render_template('register.html', bad_entry=True)
+                return render_template('register.html', bad_entry=True, instance_data=response_data.json())
         
         except:
             flash('entry unsuccessful, try again.')
-            return render_template('register.html', bad_entry=True)
-                
+            return render_template('register.html', bad_entry=True, instance_data=response_data.json())
+         
             
-    return render_template('register.html')
+    return render_template('register.html', instance_data=response_data.json())
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
