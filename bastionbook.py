@@ -26,7 +26,7 @@ def hello_name(name):
 def register():
 
     #if request is GET
-    # url = 'https://api.vishakarudhra.com/dynamodbmanager'
+    # url = 'https://8vciapa5d8.execute-api.us-west-2.amazonaws.com/test/dynamodbmanager'
     url = 'http://backend-endpoint/'
 
     get_all_data = {
