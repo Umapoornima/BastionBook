@@ -13,7 +13,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World@Durga and UmaPoornima!!</p>"
+    return "<p>Hello, World@Durga and UmaPoornima Ponna!!</p>"
 
 #for passing inputs through extensions
 #the decorator argument and the function argument
@@ -26,7 +26,7 @@ def hello_name(name):
 def register():
 
     #if request is GET
-    url = 'https://8bue09wn9h.execute-api.us-west-2.amazonaws.com/test/dynamodbmanager'
+    url = 'https://8vciapa5d8.execute-api.us-west-2.amazonaws.com/test/dynamodbmanager'
 
     get_all_data = {
     'operation': 'getall'
